@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.2.2
       with:
         fetch-depth: 0
 
@@ -39,7 +39,7 @@ jobs:
 
     - name: Cache maven files
       id: maven-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4.2.0
       with:
         path: ~/.m2/repository
         key: maven-${{ hashFiles('**/pom.xml') }}
@@ -66,3 +66,10 @@ jobs:
         body: ${{ steps.changelog.outputs.clean_changelog }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Trigger repository dispatch
+      uses: peter-evans/repository-dispatch@v3
+      with:
+          token: ${{ secrets.COMMON_BUILD_PIPELINE_PAT }}
+          repository: pde-build-demo/war
+          event-type: dependency_updated
+          client-payload: '{"triggered_by": "${{ github.repository }}, on push event", "commit_sha": "${{ github.sha }}", "branch": "${{ github.ref }}", "java-version": "${{ steps.changelog.outputs.version }}"}'

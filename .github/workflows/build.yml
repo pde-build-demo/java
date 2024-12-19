@@ -20,12 +20,11 @@ jobs:
         working-directory: repos/java
     name: Build and Release
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./java
     steps:
     - name: Check out code
       uses: actions/checkout@v4.2.2
       with:
+        path: repos/java
         repository: 'pde-build-demo/java'
         fetch-depth: 0
 

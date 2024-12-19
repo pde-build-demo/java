@@ -1,0 +1,15 @@
+name: Trigger Main Build Workflow
+on:
+  push:
+    branches: [ main ]
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger repository dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+            token: ${{ secrets.COMMON_BUILD_PIPELINE_PAT }}
+            repository: pde-build-demo/war
+            event-type: dependency_updated
+            client-payload: '{"triggered_by": "${{ github.repository }}, on push event", "commit_sha": "${{ github.sha }}", "branch": "${{ github.ref }}"}'

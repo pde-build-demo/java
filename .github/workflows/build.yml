@@ -1,10 +1,12 @@
-name: release
-
+name: 🏗️ Build the core java jar
 on:
+  workflow_call:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  #
+  #I don't think we need this to run on any pushes. Re-evaluate after testing.
+  # push:
+  #   branches-ignore:
+  #     - main
 
 permissions:
   contents: write
@@ -65,11 +67,3 @@ jobs:
         name: Release ${{ steps.changelog.outputs.version }}
         body: ${{ steps.changelog.outputs.clean_changelog }}
         token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Trigger repository dispatch
-      uses: peter-evans/repository-dispatch@v3
-      with:
-          token: ${{ secrets.COMMON_BUILD_PIPELINE_PAT }}
-          repository: pde-build-demo/war
-          event-type: dependency_updated
-          client-payload: '{"triggered_by": "${{ github.repository }}, on push event", "commit_sha": "${{ github.sha }}", "branch": "${{ github.ref }}", "java-version": "${{ steps.changelog.outputs.version }}"}'

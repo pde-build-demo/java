@@ -11,8 +11,6 @@ on:
 permissions:
   contents: write
   packages: write
-  - run: pwd
-  - run: ls -al
   deployments: write
 
 jobs:

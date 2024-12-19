@@ -21,6 +21,7 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4.2.2
       with:
+        repository: 'pde-build-demo/java'
         fetch-depth: 0
 
     - run: npm i conventional-changelog-conventionalcommits@7.0.2

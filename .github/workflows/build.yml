@@ -30,12 +30,12 @@ jobs:
         fetch-depth: 0
 
     - run: |
-      pwd
-      ls -al
-      echo $PATH
-      ls -al /
-      ls -al /usr/bin
-      ls -al /bin
+        pwd
+        ls -al
+        echo $PATH
+        ls -al /
+        ls -al /usr/bin
+        ls -al /bin
 
     - run: npm i conventional-changelog-conventionalcommits@7.0.2
 

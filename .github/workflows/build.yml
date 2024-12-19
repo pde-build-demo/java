@@ -15,6 +15,9 @@ permissions:
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: repos/java
     name: Build and Release
     runs-on: ubuntu-latest
     env:

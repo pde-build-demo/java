@@ -17,13 +17,14 @@ jobs:
   build:
     name: Build and Release
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./java
     steps:
     - name: Check out code
       uses: actions/checkout@v4.2.2
       with:
         repository: 'pde-build-demo/java'
         fetch-depth: 0
-        path: java
 
     - run: npm i conventional-changelog-conventionalcommits@7.0.2
     - run: pwd
@@ -31,7 +32,6 @@ jobs:
 
     - name: Conventional Changelog Action
       id: changelog
-      working-directory: java
       uses: TriPSs/conventional-changelog-action@v5.3.0
       with:
         config-file-path: ./.changelog.config.js
@@ -60,14 +60,12 @@ jobs:
         java-version: 17
 
     - name: Deploy to GitHub maven repo
-      working-directory: java
       run: mvn --no-transfer-progress -Djgitver.use-version=${{ steps.changelog.outputs.version }} -DuseGitHubPackages=true clean deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create a GitHub release
       uses: ncipollo/release-action@v1
-      working-directory: java
       with:
         artifacts: "target/*.jar,target/CHANGELOG.md"
         tag: ${{ steps.changelog.outputs.tag }}
